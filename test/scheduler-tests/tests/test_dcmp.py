@@ -18,9 +18,9 @@ class TestDCMP(unittest.TestCase):
         """check EXIST=ONLY_SRC"""
 
         # set up unique directories for this test
-        src_dirpath = os.path.join(config.tmp_dir, "src_0")
-        dest_dirpath = os.path.join(config.tmp_dir, "dest_0")
-        output_filepath = os.path.join(config.tmp_dir, "output_0")
+        src_dirpath = os.path.join(config.test_dir, "src_0")
+        dest_dirpath = os.path.join(config.test_dir, "dest_0")
+        output_filepath = os.path.join(config.test_dir, "output_0")
 
         # set up directories/files to test on
         os.makedirs(os.path.join(src_dirpath, "tempdir"), exist_ok=True)
@@ -57,9 +57,9 @@ class TestDCMP(unittest.TestCase):
         """check EXIST=ONLY_DEST"""
 
         # set up unique directories for this test
-        src_dirpath = os.path.join(config.tmp_dir, "src_1")
-        dest_dirpath = os.path.join(config.tmp_dir, "dest_1")
-        output_filepath = os.path.join(config.tmp_dir, "output_1")
+        src_dirpath = os.path.join(config.test_dir, "src_1")
+        dest_dirpath = os.path.join(config.test_dir, "dest_1")
+        output_filepath = os.path.join(config.test_dir, "output_1")
 
         # set up directories/files to test on
         os.makedirs(os.path.join(src_dirpath), exist_ok=True)
@@ -97,9 +97,9 @@ class TestDCMP(unittest.TestCase):
         """check EXIST=DIFFER"""
 
         # set up unique directories for this test
-        src_dirpath = os.path.join(config.tmp_dir, "src_2")
-        dest_dirpath = os.path.join(config.tmp_dir, "dest_2")
-        output_filepath = os.path.join(config.tmp_dir, "output_2")
+        src_dirpath = os.path.join(config.test_dir, "src_2")
+        dest_dirpath = os.path.join(config.test_dir, "dest_2")
+        output_filepath = os.path.join(config.test_dir, "output_2")
 
         # set up directories/files to test on
         os.makedirs(os.path.join(src_dirpath), exist_ok=True)
@@ -133,9 +133,9 @@ class TestDCMP(unittest.TestCase):
         """check EXIST=COMMON"""
 
         # set up unique directories for this test
-        src_dirpath = os.path.join(config.tmp_dir, "src_3")
-        dest_dirpath = os.path.join(config.tmp_dir, "dest_3")
-        output_filepath = os.path.join(config.tmp_dir, "output_3")
+        src_dirpath = os.path.join(config.test_dir, "src_3")
+        dest_dirpath = os.path.join(config.test_dir, "dest_3")
+        output_filepath = os.path.join(config.test_dir, "output_3")
 
         # set up directories/files to test on
         os.makedirs(os.path.join(src_dirpath), exist_ok=True)
@@ -173,9 +173,9 @@ class TestDCMP(unittest.TestCase):
         """check TYPE=DIFFER"""
 
         # set up unique directories for this test
-        src_dirpath = os.path.join(config.tmp_dir, "src_4")
-        dest_dirpath = os.path.join(config.tmp_dir, "dest_4")
-        output_filepath = os.path.join(config.tmp_dir, "output_4")
+        src_dirpath = os.path.join(config.test_dir, "src_4")
+        dest_dirpath = os.path.join(config.test_dir, "dest_4")
+        output_filepath = os.path.join(config.test_dir, "output_4")
 
         # set up directories/files to test on
         os.makedirs(os.path.join(src_dirpath, "tempdir"), exist_ok=True)
@@ -216,9 +216,9 @@ class TestDCMP(unittest.TestCase):
         """check (EXIST=COMMON) && (TYPE=DIFFER)"""
 
         # set up unique directories for this test
-        src_dirpath = os.path.join(config.tmp_dir, "src_5")
-        dest_dirpath = os.path.join(config.tmp_dir, "dest_5")
-        output_filepath = os.path.join(config.tmp_dir, "output_5")
+        src_dirpath = os.path.join(config.test_dir, "src_5")
+        dest_dirpath = os.path.join(config.test_dir, "dest_5")
+        output_filepath = os.path.join(config.test_dir, "output_5")
 
         # set up directories/files to test on
         os.makedirs(os.path.join(src_dirpath, "tempdir"), exist_ok=True)
@@ -259,9 +259,9 @@ class TestDCMP(unittest.TestCase):
         """check (TYPE=DIFFER) && (EXIST=COMMON)"""
 
         # set up unique directories for this test
-        src_dirpath = os.path.join(config.tmp_dir, "src_6")
-        dest_dirpath = os.path.join(config.tmp_dir, "dest_6")
-        output_filepath = os.path.join(config.tmp_dir, "output_6")
+        src_dirpath = os.path.join(config.test_dir, "src_6")
+        dest_dirpath = os.path.join(config.test_dir, "dest_6")
+        output_filepath = os.path.join(config.test_dir, "output_6")
 
         # set up directories/files to test on
         os.makedirs(os.path.join(src_dirpath, "tempdir"), exist_ok=True)
@@ -302,9 +302,9 @@ class TestDCMP(unittest.TestCase):
         """check (TYPE=DIFFER) && (EXIST=DIFFER)"""
 
         # set up unique directories for this test
-        src_dirpath = os.path.join(config.tmp_dir, "src_7")
-        dest_dirpath = os.path.join(config.tmp_dir, "dest_7")
-        output_filepath = os.path.join(config.tmp_dir, "output_7")
+        src_dirpath = os.path.join(config.test_dir, "src_7")
+        dest_dirpath = os.path.join(config.test_dir, "dest_7")
+        output_filepath = os.path.join(config.test_dir, "output_7")
 
         # set up directories/files to test on
         os.makedirs(os.path.join(src_dirpath, "tempdir"), exist_ok=True)
@@ -345,9 +345,9 @@ class TestDCMP(unittest.TestCase):
         """check (EXIST=DIFFER) && (TYPE=DIFFER)"""
 
         # set up unique directories for this test
-        src_dirpath = os.path.join(config.tmp_dir, "src_8")
-        dest_dirpath = os.path.join(config.tmp_dir, "dest_8")
-        output_filepath = os.path.join(config.tmp_dir, "output_8")
+        src_dirpath = os.path.join(config.test_dir, "src_8")
+        dest_dirpath = os.path.join(config.test_dir, "dest_8")
+        output_filepath = os.path.join(config.test_dir, "output_8")
 
         # set up directories/files to test on
         os.makedirs(os.path.join(src_dirpath, "tempdir"), exist_ok=True)
@@ -388,9 +388,9 @@ class TestDCMP(unittest.TestCase):
         """check (TYPE=DIFFER) || (EXIST=DIFFER)"""
 
         # set up unique directories for this test
-        src_dirpath = os.path.join(config.tmp_dir, "src_9")
-        dest_dirpath = os.path.join(config.tmp_dir, "dest_9")
-        output_filepath = os.path.join(config.tmp_dir, "output_9")
+        src_dirpath = os.path.join(config.test_dir, "src_9")
+        dest_dirpath = os.path.join(config.test_dir, "dest_9")
+        output_filepath = os.path.join(config.test_dir, "output_9")
 
         # set up directories/files to test on
         os.makedirs(os.path.join(src_dirpath, "tempdir"), exist_ok=True)
@@ -427,8 +427,8 @@ class TestDCMP(unittest.TestCase):
         """extras and diff comparison"""
 
         # set up unique directories for this test
-        src_dirpath = os.path.join(config.tmp_dir, "src_10")
-        dest_dirpath = os.path.join(config.tmp_dir, "dest_10")
+        src_dirpath = os.path.join(config.test_dir, "src_10")
+        dest_dirpath = os.path.join(config.test_dir, "dest_10")
 
         # set up directories/files to test on
         os.makedirs(src_dirpath, exist_ok=True)

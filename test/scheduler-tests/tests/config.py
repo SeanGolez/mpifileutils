@@ -3,4 +3,4 @@
 bin_dir = None
 scheduler = None
 run_cmd = None
-tmp_dir = None
+test_dir = None
