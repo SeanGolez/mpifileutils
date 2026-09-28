@@ -13,7 +13,7 @@ def main():
     parser.add_argument("-N", "--nodes", type=int, default=None, help="Required when --scheduler [slurm/flux] is selected")
     parser.add_argument("-n", "--tasks", type=int, default=None, help="Required when --scheduler [slurm/flux] is selected")
     parser.add_argument("-np", "--processes", type=int, default=None, help="Required when --scheduler none is selected")
-    parser.add_argument("--tmp-dir", type=str, default="")
+    parser.add_argument("--test-dir", type=str, default="")
     args = parser.parse_args()
     
     check_missing_scheduler_args(args, parser)
@@ -51,7 +51,7 @@ def set_configs(args):
         config.run_cmd = ["flux", "run", f"--nodes={args.nodes}", f"--ntasks={args.tasks}"]
     if config.scheduler == "none":
         config.run_cmd = ["mpirun", "-np", str(args.processes)]
-    config.tmp_dir = args.tmp_dir
+    config.test_dir = args.test_dir
 
 def run_tests():
     suite = unittest.defaultTestLoader.discover("tests", pattern="test_*.py")
