@@ -1,8 +1,20 @@
 #!/usr/bin/env python3
 
 import subprocess
+import unittest
 import os
 from tests import config
+
+class TestCase(unittest.TestCase):
+    def run_local_successfully(self, *command):
+        result = run_local(*command)
+        self.assertEqual(result.returncode, 0, msg=result.stderr)
+        return result
+
+    def run_distributed_successfully(self, *command):
+        result = run_distributed(*command)
+        self.assertEqual(result.returncode, 0, msg=result.stderr)
+        return result
 
 def run_local(*command):
     command = list(map(str, command))
