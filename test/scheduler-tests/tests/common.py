@@ -44,3 +44,8 @@ def create_empty_files(*files):
     for filepath in files:
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
         open(filepath, 'w').close()
+
+def get_file_contents(filepath):
+    with open(filepath, "r") as file:
+        output = file.read()
+    return output
