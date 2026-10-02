@@ -5,8 +5,6 @@ import random
 import os
 from tests import common, config
 
-# define global constants
-DCHMOD = os.path.join(config.bin_dir, "dchmod")
 class TestDCHMOD(unittest.TestCase):
     """Tests for dchmod"""
 
@@ -22,7 +20,7 @@ class TestDCHMOD(unittest.TestCase):
 
         # run dchmod with a random valid octal mode between 700 - 777
         octal = "7" + str(random.randrange(0, 8)) + str(random.randrange(0, 8))
-        dchmod_result = common.run_distributed(DCHMOD, "-v", "--mode", octal, self.tmp_tree_base)
+        dchmod_result = common.run_distributed("dchmod", "-v", "--mode", octal, self.tmp_tree_base)
 
         # CHECK: dchmod success
         self.assertEqual(dchmod_result.returncode, 0, msg=dchmod_result.stderr)
@@ -36,7 +34,7 @@ class TestDCHMOD(unittest.TestCase):
         """Change permissions on all items except those whose path match regex"""
 
         # run dchmod with symbolic syntax equivalent to 761
-        dchmod_result = common.run_distributed(DCHMOD, "--exclude", f".*{os.sep}tmp1{os.sep}.*", "--mode", "u+rwx,g+rw,g-x,o+x,o-rw", self.tmp_tree_base)
+        dchmod_result = common.run_distributed("dchmod", "--exclude", f".*{os.sep}tmp1{os.sep}.*", "--mode", "u+rwx,g+rw,g-x,o+x,o-rw", self.tmp_tree_base)
 
         # CHECK: dchmod success
         self.assertEqual(dchmod_result.returncode, 0, msg=dchmod_result.stderr)
@@ -53,7 +51,7 @@ class TestDCHMOD(unittest.TestCase):
         """Change permissions on items whose name match regex"""
 
         # run dchmod with symbolic syntax equivalent to 761
-        dchmod_result = common.run_distributed(DCHMOD, "--name", "--match", ".*_file$", "--mode", "u+rwx,g+rw,g-x,o+x,o-rw", self.tmp_tree_base)
+        dchmod_result = common.run_distributed("dchmod", "--name", "--match", ".*_file$", "--mode", "u+rwx,g+rw,g-x,o+x,o-rw", self.tmp_tree_base)
 
         # CHECK: dchmod success
         self.assertEqual(dchmod_result.returncode, 0, msg=dchmod_result.stderr)
