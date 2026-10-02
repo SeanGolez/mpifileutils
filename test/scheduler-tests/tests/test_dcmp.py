@@ -4,11 +4,6 @@ import unittest
 import os
 from tests import common, config
 
-# define global constants
-DCMP = os.path.join(config.bin_dir, "dcmp")
-DCP = os.path.join(config.bin_dir, "dcp")
-DWALK = os.path.join(config.bin_dir, "dwalk")
-
 class TestDCMP(unittest.TestCase):
     """Tests for dcmp"""
 
@@ -31,13 +26,13 @@ class TestDCMP(unittest.TestCase):
         common.create_empty_files(self.src_dirpath_tempfile_path)
 
         # run dcmp, output entry that exists only in source path
-        dcmp_result = common.run_distributed(DCMP, self.src_dirpath, self.dest_dirpath, "-o", f"EXIST=ONLY_SRC:{self.output_filepath}")
+        dcmp_result = common.run_distributed("dcmp", self.src_dirpath, self.dest_dirpath, "-o", f"EXIST=ONLY_SRC:{self.output_filepath}")
 
         # CHECK: dcmp success
         self.assertEqual(dcmp_result.returncode, 0, msg=dcmp_result.stderr)
 
         # run dwalk over output
-        dwalk_result = common.run_distributed(DWALK, "--print", "--input", self.output_filepath)
+        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
 
         # CHECK: src/tempfile reported
         self.assertIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
@@ -56,13 +51,13 @@ class TestDCMP(unittest.TestCase):
         common.create_empty_files(self.src_dirpath_tempfile_path, self.dest_dirpath_tempfile_path)
 
         # run dcmp, output entry that exists only in destination path
-        dcmp_result = common.run_distributed(DCMP, self.src_dirpath, self.dest_dirpath, "-o", f"EXIST=ONLY_DEST:{self.output_filepath}")
+        dcmp_result = common.run_distributed("dcmp", self.src_dirpath, self.dest_dirpath, "-o", f"EXIST=ONLY_DEST:{self.output_filepath}")
 
         # CHECK: dcmp success
         self.assertEqual(dcmp_result.returncode, 0, msg=dcmp_result.stderr)
 
         # run dwalk over output
-        dwalk_result = common.run_distributed(DWALK, "--print", "--input", self.output_filepath)
+        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
 
         # CHECK: src/tempfile not reported
         self.assertNotIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
@@ -81,13 +76,13 @@ class TestDCMP(unittest.TestCase):
         common.create_empty_directories(self.dest_dirpath_tempdir_path)
 
         # run dcmp, output entries that differ in existence
-        dcmp_result = common.run_distributed(DCMP, self.src_dirpath, self.dest_dirpath, "-o", f"EXIST=DIFFER:{self.output_filepath}")
+        dcmp_result = common.run_distributed("dcmp", self.src_dirpath, self.dest_dirpath, "-o", f"EXIST=DIFFER:{self.output_filepath}")
 
         # CHECK: dcmp success
         self.assertEqual(dcmp_result.returncode, 0, msg=dcmp_result.stderr)
 
         # run dwalk over output
-        dwalk_result = common.run_distributed(DWALK, "--print", "--input", self.output_filepath)
+        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
 
         # CHECK: src/tempfile is reported
         self.assertIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
@@ -103,13 +98,13 @@ class TestDCMP(unittest.TestCase):
         common.create_empty_files(self.src_dirpath_tempfile_path, self.dest_dirpath_tempfile_path)
 
         # run dcmp, output entries that exist in both paths
-        dcmp_result = common.run_distributed(DCMP, self.src_dirpath, self.dest_dirpath, "-o", f"EXIST=COMMON:{self.output_filepath}")
+        dcmp_result = common.run_distributed("dcmp", self.src_dirpath, self.dest_dirpath, "-o", f"EXIST=COMMON:{self.output_filepath}")
 
         # CHECK: dcmp success
         self.assertEqual(dcmp_result.returncode, 0, msg=dcmp_result.stderr)
 
         # run dwalk over output
-        dwalk_result = common.run_distributed(DWALK, "--print", "--input", self.output_filepath)
+        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
 
         # CHECK: dest/tempdir not reported
         self.assertNotIn(self.dest_dirpath_tempdir_path, dwalk_result.stdout, msg=dwalk_result.stderr)
@@ -128,13 +123,13 @@ class TestDCMP(unittest.TestCase):
         common.create_empty_files(self.src_dirpath_tempfile_path)
 
         # run dcmp, output entries with different types
-        dcmp_result = common.run_distributed(DCMP, self.src_dirpath, self.dest_dirpath, "-o", f"TYPE=DIFFER:{self.output_filepath}")
+        dcmp_result = common.run_distributed("dcmp", self.src_dirpath, self.dest_dirpath, "-o", f"TYPE=DIFFER:{self.output_filepath}")
 
         # CHECK: dcmp success
         self.assertEqual(dcmp_result.returncode, 0, msg=dcmp_result.stderr)
 
         # run dwalk over output
-        dwalk_result = common.run_distributed(DWALK, "--print", "--input", self.output_filepath)
+        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
 
         # CHECK: src/tempfile is reported
         self.assertIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
@@ -156,13 +151,13 @@ class TestDCMP(unittest.TestCase):
         common.create_empty_files(self.src_dirpath_tempfile_path)
 
         # run dcmp, output entries that exist in both but have different types
-        dcmp_result = common.run_distributed(DCMP, self.src_dirpath, self.dest_dirpath, "-o", f"EXIST=COMMON@TYPE=DIFFER:{self.output_filepath}")
+        dcmp_result = common.run_distributed("dcmp", self.src_dirpath, self.dest_dirpath, "-o", f"EXIST=COMMON@TYPE=DIFFER:{self.output_filepath}")
 
         # CHECK: dcmp success
         self.assertEqual(dcmp_result.returncode, 0, msg=dcmp_result.stderr)
 
         # run dwalk over output
-        dwalk_result = common.run_distributed(DWALK, "--print", "--input", self.output_filepath)
+        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
 
         # CHECK: src/tempfile is reported
         self.assertIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
@@ -184,13 +179,13 @@ class TestDCMP(unittest.TestCase):
         common.create_empty_files(self.src_dirpath_tempfile_path)
 
         # run dcmp, output entries with different types that exist in both
-        dcmp_result = common.run_distributed(DCMP, self.src_dirpath, self.dest_dirpath, "-o", f"TYPE=DIFFER@EXIST=COMMON:{self.output_filepath}")
+        dcmp_result = common.run_distributed("dcmp", self.src_dirpath, self.dest_dirpath, "-o", f"TYPE=DIFFER@EXIST=COMMON:{self.output_filepath}")
 
         # CHECK: dcmp success
         self.assertEqual(dcmp_result.returncode, 0, msg=dcmp_result.stderr)
 
         # run dwalk over output
-        dwalk_result = common.run_distributed(DWALK, "--print", "--input", self.output_filepath)
+        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
 
         # CHECK: src/tempfile is reported
         self.assertIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
@@ -212,13 +207,13 @@ class TestDCMP(unittest.TestCase):
         common.create_empty_files(self.src_dirpath_tempfile_path)
 
         # run dcmp, output entries with different types AND differ in existence (none should match)
-        dcmp_result = common.run_distributed(DCMP, self.src_dirpath, self.dest_dirpath, "-o", f"TYPE=DIFFER@EXIST=DIFFER:{self.output_filepath}")
+        dcmp_result = common.run_distributed("dcmp", self.src_dirpath, self.dest_dirpath, "-o", f"TYPE=DIFFER@EXIST=DIFFER:{self.output_filepath}")
 
         # CHECK: dcmp success
         self.assertEqual(dcmp_result.returncode, 0, msg=dcmp_result.stderr)
 
         # run dwalk over output
-        dwalk_result = common.run_distributed(DWALK, "--print", "--input", self.output_filepath)
+        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
 
         # CHECK: src/tempfile not reported
         self.assertNotIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
@@ -240,13 +235,13 @@ class TestDCMP(unittest.TestCase):
         common.create_empty_files(self.src_dirpath_tempfile_path)
 
         # run dcmp, output entries that differ in existence AND have different types (none should match)
-        dcmp_result = common.run_distributed(DCMP, self.src_dirpath, self.dest_dirpath, "-o", f"EXIST=DIFFER@TYPE=DIFFER:{self.output_filepath}")
+        dcmp_result = common.run_distributed("dcmp", self.src_dirpath, self.dest_dirpath, "-o", f"EXIST=DIFFER@TYPE=DIFFER:{self.output_filepath}")
 
         # CHECK: dcmp success
         self.assertEqual(dcmp_result.returncode, 0, msg=dcmp_result.stderr)
 
         # run dwalk over output
-        dwalk_result = common.run_distributed(DWALK, "--print", "--input", self.output_filepath)
+        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
 
         # CHECK: src/tempfile not reported
         self.assertNotIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
@@ -268,13 +263,13 @@ class TestDCMP(unittest.TestCase):
         common.create_empty_files(self.src_dirpath_tempfile_path)
 
         # run dcmp, output entries with different types OR differ in existence
-        dcmp_result = common.run_distributed(DCMP, self.src_dirpath, self.dest_dirpath, "-o", f"TYPE=DIFFER,EXIST=DIFFER:{self.output_filepath}")
+        dcmp_result = common.run_distributed("dcmp", self.src_dirpath, self.dest_dirpath, "-o", f"TYPE=DIFFER,EXIST=DIFFER:{self.output_filepath}")
 
         # CHECK: dcmp success
         self.assertEqual(dcmp_result.returncode, 0, msg=dcmp_result.stderr)
 
         # run dwalk over output
-        dwalk_result = common.run_distributed(DWALK, "--print", "--input", self.output_filepath)
+        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
 
         # CHECK: src/tempfile is reported
         self.assertIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
@@ -299,13 +294,13 @@ class TestDCMP(unittest.TestCase):
         self.assertEqual(dd_create.returncode, 0, msg=dd_create.stderr)
 
         # copy the file to destination using dcp
-        dcp_copy = common.run_distributed(DCP, self.src_dirpath_tempfile_path, self.dest_dirpath)
+        dcp_copy = common.run_distributed("dcp", self.src_dirpath_tempfile_path, self.dest_dirpath)
 
         # CHECK: dcp success
         self.assertEqual(dcp_copy.returncode, 0, msg=dcp_copy.stderr)
 
         # run dcmp to check same contents
-        dcmp_result = common.run_distributed(DCMP, self.src_dirpath, self.dest_dirpath)
+        dcmp_result = common.run_distributed("dcmp", self.src_dirpath, self.dest_dirpath)
 
         # CHECK: dcmp success
         self.assertEqual(dcmp_result.returncode, 0, msg=dcmp_result.stderr)
@@ -348,7 +343,7 @@ class TestDCMP(unittest.TestCase):
         )
 
         # run dcmp again to check for differences
-        dcmp_result2 = common.run_distributed(DCMP, self.src_dirpath, self.dest_dirpath)
+        dcmp_result2 = common.run_distributed("dcmp", self.src_dirpath, self.dest_dirpath)
 
         # CHECK: dcmp success
         self.assertEqual(dcmp_result2.returncode, 0, msg=dcmp_result2.stderr)
