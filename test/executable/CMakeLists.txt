@@ -46,7 +46,7 @@ SET(MFU_EXECUTABLE_TEST_ENVIRONMENT
 FUNCTION(MFU_ADD_EXECUTABLE_TEST module)
   ADD_TEST(
     NAME "executable.${module}"
-    COMMAND "${Python3_EXECUTABLE}" -m unittest "tests/test_${module}.py" -v
+    COMMAND "${Python3_EXECUTABLE}" -m unittest "tests/test_${module}.py"
   )
   SET_TESTS_PROPERTIES("executable.${module}" PROPERTIES
     ENVIRONMENT "${MFU_EXECUTABLE_TEST_ENVIRONMENT}"

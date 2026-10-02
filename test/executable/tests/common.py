@@ -18,7 +18,7 @@ class TestCase(unittest.TestCase):
 
 def run_local(*command):
     command = list(map(str, command))
-    print(f"Running: {' '.join(command)}")
+    # print(f"Running: {' '.join(command)}")
 
     result = subprocess.run(
         command, 
@@ -27,9 +27,9 @@ def run_local(*command):
         universal_newlines=True
     )
     
-    print("--- COMMAND STDOUT START ---")
-    print(result.stdout)
-    print("---- COMMAND STDOUT END ----")
+    # print("--- COMMAND STDOUT START ---")
+    # print(result.stdout)
+    # print("---- COMMAND STDOUT END ----")
 
     return result
 
