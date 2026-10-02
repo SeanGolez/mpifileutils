@@ -19,7 +19,7 @@ class TestDCMP(common.TestCase):
         self.dest_dirpath_tempfile_path = os.path.join(self.dest_dirpath, "tempfile")
 
     def test_expression_0(self):
-        """check EXIST=ONLY_SRC"""
+        """check EXIST=ONLY_SRC with binary formatted output"""
 
         # set up directories/files to test on
         common.create_empty_directories(self.src_dirpath_tempdir_path, self.dest_dirpath_tempdir_path)
@@ -50,17 +50,17 @@ class TestDCMP(common.TestCase):
         # run dcmp, output entry that exists only in destination path
         self.run_distributed_successfully("dcmp", self.src_dirpath, self.dest_dirpath, "-t", "-o", f"EXIST=ONLY_DEST:{self.output_filepath}")
 
-        # run dwalk over output
-        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
+        # get output file contents
+        output = common.get_file_contents(self.output_filepath)
 
         # CHECK: src/tempfile not reported
-        self.assertNotIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertNotIn(self.src_dirpath_tempfile_path, output, msg=output)
 
         # CHECK: dest/tempfile not reported
-        self.assertNotIn(self.dest_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertNotIn(self.dest_dirpath_tempfile_path, output, msg=output)
 
         # CHECK: dest/tempdir is reported
-        self.assertIn(self.dest_dirpath_tempdir_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertIn(self.dest_dirpath_tempdir_path, output, msg=output)
 
     def test_expression_2(self):
         """check EXIST=DIFFER"""
@@ -72,14 +72,14 @@ class TestDCMP(common.TestCase):
         # run dcmp, output entries that differ in existence
         self.run_distributed_successfully("dcmp", self.src_dirpath, self.dest_dirpath, "-t", "-o", f"EXIST=DIFFER:{self.output_filepath}")
 
-        # run dwalk over output
-        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
+        # get output file contents
+        output = common.get_file_contents(self.output_filepath)
 
         # CHECK: src/tempfile is reported
-        self.assertIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertIn(self.src_dirpath_tempfile_path, output, msg=output)
 
         # CHECK: dest/tempdir is reported
-        self.assertIn(self.dest_dirpath_tempdir_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertIn(self.dest_dirpath_tempdir_path, output, msg=output)
 
     def test_expression_3(self):
         """check EXIST=COMMON"""
@@ -91,17 +91,17 @@ class TestDCMP(common.TestCase):
         # run dcmp, output entries that exist in both paths
         self.run_distributed_successfully("dcmp", self.src_dirpath, self.dest_dirpath, "-t", "-o", f"EXIST=COMMON:{self.output_filepath}")
 
-        # run dwalk over output
-        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
+        # get output file contents
+        output = common.get_file_contents(self.output_filepath)
 
         # CHECK: dest/tempdir not reported
-        self.assertNotIn(self.dest_dirpath_tempdir_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertNotIn(self.dest_dirpath_tempdir_path, output, msg=output)
 
         # CHECK: src/tempfile is reported
-        self.assertIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertIn(self.src_dirpath_tempfile_path, output, msg=output)
 
         # CHECK: dest/tempfile is reported
-        self.assertIn(self.dest_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertIn(self.dest_dirpath_tempfile_path, output, msg=output)
 
     def test_expression_4(self):
         """check TYPE=DIFFER"""
@@ -113,20 +113,20 @@ class TestDCMP(common.TestCase):
         # run dcmp, output entries with different types
         self.run_distributed_successfully("dcmp", self.src_dirpath, self.dest_dirpath, "-t", "-o", f"TYPE=DIFFER:{self.output_filepath}")
 
-        # run dwalk over output
-        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
+        # get output file contents
+        output = common.get_file_contents(self.output_filepath)
 
         # CHECK: src/tempfile is reported
-        self.assertIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertIn(self.src_dirpath_tempfile_path, output, msg=output)
 
         # CHECK: src/tempdir not reported
-        self.assertNotIn(self.src_dirpath_tempdir_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertNotIn(self.src_dirpath_tempdir_path, output, msg=output)
 
         # CHECK: dest/tempfile is reported
-        self.assertIn(self.dest_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertIn(self.dest_dirpath_tempfile_path, output, msg=output)
 
         # CHECK: dest/tempdir not reported
-        self.assertNotIn(self.dest_dirpath_tempdir_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertNotIn(self.dest_dirpath_tempdir_path, output, msg=output)
 
     def test_expression_5(self):
         """check (EXIST=COMMON) && (TYPE=DIFFER)"""
@@ -138,20 +138,20 @@ class TestDCMP(common.TestCase):
         # run dcmp, output entries that exist in both but have different types
         self.run_distributed_successfully("dcmp", self.src_dirpath, self.dest_dirpath, "-t", "-o", f"EXIST=COMMON@TYPE=DIFFER:{self.output_filepath}")
 
-        # run dwalk over output
-        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
+        # get output file contents
+        output = common.get_file_contents(self.output_filepath)
 
         # CHECK: src/tempfile is reported
-        self.assertIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertIn(self.src_dirpath_tempfile_path, output, msg=output)
 
         # CHECK: src/tempdir not reported
-        self.assertNotIn(self.src_dirpath_tempdir_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertNotIn(self.src_dirpath_tempdir_path, output, msg=output)
 
         # CHECK: dest/tempfile is reported
-        self.assertIn(self.dest_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertIn(self.dest_dirpath_tempfile_path, output, msg=output)
 
         # CHECK: dest/tempdir not reported
-        self.assertNotIn(self.dest_dirpath_tempdir_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertNotIn(self.dest_dirpath_tempdir_path, output, msg=output)
 
     def test_expression_6(self):
         """check (TYPE=DIFFER) && (EXIST=COMMON)"""
@@ -163,20 +163,20 @@ class TestDCMP(common.TestCase):
         # run dcmp, output entries with different types that exist in both
         self.run_distributed_successfully("dcmp", self.src_dirpath, self.dest_dirpath, "-t", "-o", f"TYPE=DIFFER@EXIST=COMMON:{self.output_filepath}")
 
-        # run dwalk over output
-        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
+        # get output file contents
+        output = common.get_file_contents(self.output_filepath)
 
         # CHECK: src/tempfile is reported
-        self.assertIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertIn(self.src_dirpath_tempfile_path, output, msg=output)
 
         # CHECK: src/tempdir not reported
-        self.assertNotIn(self.src_dirpath_tempdir_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertNotIn(self.src_dirpath_tempdir_path, output, msg=output)
 
         # CHECK: dest/tempfile is reported
-        self.assertIn(self.dest_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertIn(self.dest_dirpath_tempfile_path, output, msg=output)
 
         # CHECK: dest/tempdir not reported
-        self.assertNotIn(self.dest_dirpath_tempdir_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertNotIn(self.dest_dirpath_tempdir_path, output, msg=output)
 
     def test_expression_7(self):
         """check (TYPE=DIFFER) && (EXIST=DIFFER)"""
@@ -188,20 +188,20 @@ class TestDCMP(common.TestCase):
         # run dcmp, output entries with different types AND differ in existence (none should match)
         self.run_distributed_successfully("dcmp", self.src_dirpath, self.dest_dirpath, "-t", "-o", f"TYPE=DIFFER@EXIST=DIFFER:{self.output_filepath}")
 
-        # run dwalk over output
-        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
+        # get output file contents
+        output = common.get_file_contents(self.output_filepath)
 
         # CHECK: src/tempfile not reported
-        self.assertNotIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertNotIn(self.src_dirpath_tempfile_path, output, msg=output)
 
         # CHECK: src/tempdir not reported
-        self.assertNotIn(self.src_dirpath_tempdir_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertNotIn(self.src_dirpath_tempdir_path, output, msg=output)
 
         # CHECK: dest/tempfile not reported
-        self.assertNotIn(self.dest_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertNotIn(self.dest_dirpath_tempfile_path, output, msg=output)
 
         # CHECK: dest/tempdir not reported
-        self.assertNotIn(self.dest_dirpath_tempdir_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertNotIn(self.dest_dirpath_tempdir_path, output, msg=output)
 
     def test_expression_8(self):
         """check (EXIST=DIFFER) && (TYPE=DIFFER)"""
@@ -213,20 +213,20 @@ class TestDCMP(common.TestCase):
         # run dcmp, output entries that differ in existence AND have different types (none should match)
         self.run_distributed_successfully("dcmp", self.src_dirpath, self.dest_dirpath, "-t", "-o", f"EXIST=DIFFER@TYPE=DIFFER:{self.output_filepath}")
 
-        # run dwalk over output
-        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
+        # get output file contents
+        output = common.get_file_contents(self.output_filepath)
 
         # CHECK: src/tempfile not reported
-        self.assertNotIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertNotIn(self.src_dirpath_tempfile_path, output, msg=output)
 
         # CHECK: src/tempdir not reported
-        self.assertNotIn(self.src_dirpath_tempdir_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertNotIn(self.src_dirpath_tempdir_path, output, msg=output)
 
         # CHECK: dest/tempfile not reported
-        self.assertNotIn(self.dest_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertNotIn(self.dest_dirpath_tempfile_path, output, msg=output)
 
         # CHECK: dest/tempdir not reported
-        self.assertNotIn(self.dest_dirpath_tempdir_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertNotIn(self.dest_dirpath_tempdir_path, output, msg=output)
 
     def test_expression_9(self):
         """check (TYPE=DIFFER) || (EXIST=DIFFER)"""
@@ -238,17 +238,17 @@ class TestDCMP(common.TestCase):
         # run dcmp, output entries with different types OR differ in existence
         self.run_distributed_successfully("dcmp", self.src_dirpath, self.dest_dirpath, "-t", "-o", f"TYPE=DIFFER,EXIST=DIFFER:{self.output_filepath}")
 
-        # run dwalk over output
-        dwalk_result = common.run_distributed("dwalk", "--print", "--input", self.output_filepath)
+        # get output file contents
+        output = common.get_file_contents(self.output_filepath)
 
         # CHECK: src/tempfile is reported
-        self.assertIn(self.src_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertIn(self.src_dirpath_tempfile_path, output, msg=output)
 
         # CHECK: src/tempdir is reported
-        self.assertIn(self.src_dirpath_tempdir_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertIn(self.src_dirpath_tempdir_path, output, msg=output)
 
         # CHECK: dest/tempfile is reported
-        self.assertIn(self.dest_dirpath_tempfile_path, dwalk_result.stdout, msg=dwalk_result.stderr)
+        self.assertIn(self.dest_dirpath_tempfile_path, output, msg=output)
 
     def test_extras_and_differences(self):
         """extras and diff comparison"""
