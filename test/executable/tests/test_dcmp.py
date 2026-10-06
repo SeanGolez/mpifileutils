@@ -256,9 +256,7 @@ class TestDCMP(common.TestCase):
         # set up directories/files to test on, extra file in src to check counting
         common.create_empty_directories(self.src_dirpath, self.dest_dirpath)
         common.create_empty_files(os.path.join(self.src_dirpath, "extrafile.txt"))
-
-        # use dd to create a 100MB file
-        self.run_local_successfully("dd", "if=/dev/zero", f"of={os.path.join(self.src_dirpath, 'tempfile')}", "bs=1M", "count=100")
+        common.create_random_files(os.path.join(self.src_dirpath, "tempfile"))
 
         # copy the file to destination using dcp
         self.run_distributed_successfully("dcp", self.src_dirpath_tempfile_path, self.dest_dirpath)
