@@ -2,6 +2,7 @@
 
 import subprocess
 import unittest
+import random
 import os
 from tests import config
 
@@ -14,6 +15,16 @@ class TestCase(unittest.TestCase):
     def run_distributed_successfully(self, *command):
         result = run_distributed(*command)
         self.assertEqual(result.returncode, 0, msg=result.stderr)
+        return result
+
+    def run_local_with_failure(self, *command):
+        result = run_local(*command)
+        self.assertNotEqual(result.returncode, 0, msg=result.stderr)
+        return result
+
+    def run_distributed_with_failure(self, *command):
+        result = run_distributed(*command)
+        self.assertNotEqual(result.returncode, 0, msg=result.stderr)
         return result
 
 def run_local(*command):
@@ -44,6 +55,23 @@ def create_empty_files(*files):
     for filepath in files:
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
         open(filepath, 'w').close()
+
+def create_random_files(*files):
+    for filepath in files:
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        blocksize_mb = f"{random.randint(1, 4)}M"
+        run_local("dd", "if=/dev/urandom", f"of={filepath}", f"bs={blocksize_mb}", "count=1")
+
+def mount_basename(path):
+    path = os.path.abspath(path)
+
+    while not os.path.ismount(path):
+        parent = os.path.dirname(path)
+        if parent == path:
+            return None
+        path = parent
+
+    return os.path.basename(os.path.normpath(path))
 
 def get_file_contents(filepath):
     with open(filepath, "r") as file:
