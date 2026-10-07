@@ -7,13 +7,15 @@ class CommonTests(common.TestCase):
     # Child setUp() requires self.cp_cmd to be defined
 
     def setUp(self):
-        # set up unique directory and output file information for this test
+        # set up unique directory information for this test
         self.src_dirpath = os.path.join(config.test_dir, self.__class__.__name__, f"src_{self._testMethodName}")
         self.dest_dirpath = os.path.join(config.test_dir, self.__class__.__name__, f"dest_{self._testMethodName}")
         self.src_tempfilepath = os.path.join(self.src_dirpath, "tempfile")
         self.src_tempfilepath_symlink = os.path.join(self.src_dirpath, "tempfile_symlink")
         self.dest_tempfilepath = os.path.join(self.dest_dirpath, "tempfile")
         self.dest_tempfilepath_symlink = os.path.join(self.dest_dirpath, "tempfile_symlink")
+        self.src_tree_tempfilepath = os.path.join(self.src_dirpath, "dir1", "dir2", "tempfile")
+        self.dest_tree_tempfilepath = os.path.join(self.dest_dirpath, "dir1", "dir2", "tempfile")
 
     def test_copy_0(self):
         """Copy file with no holes"""
