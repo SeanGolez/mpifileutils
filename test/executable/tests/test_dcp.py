@@ -10,7 +10,7 @@ class TestDCP(dcp_dsync_common_tests.CommonTests):
     """Tests for dcp"""
 
     def setUp(self):
-        # set up unique directory and output file information for this test
+        # set up unique directory information for this test
         super().setUp()
 
         # for common tests
