@@ -24,7 +24,7 @@ class CommonTests(common.TestCase):
         common.create_empty_directories(self.src_dirpath, self.dest_dirpath)
 
         # Skip test on Lustre filesystem
-        if any(is_in_lustre(path) for path in (self.src_dirpath, self.dest_dirpath)):
+        if any(common.filesystem_type(path) == "lustre" for path in (self.src_dirpath, self.dest_dirpath)):
             self.skipTest("Source or destination is on Lustre.")
 
         # create file with no holes
@@ -44,7 +44,7 @@ class CommonTests(common.TestCase):
         common.create_empty_directories(self.src_dirpath, self.dest_dirpath)
 
         # Skip test on Lustre filesystem
-        if any(is_in_lustre(path) for path in (self.src_dirpath, self.dest_dirpath)):
+        if any(common.filesystem_type(path) == "lustre" for path in (self.src_dirpath, self.dest_dirpath)):
             self.skipTest("Source or destination is on Lustre.")
 
         # create file with a front 4K hole
@@ -64,7 +64,7 @@ class CommonTests(common.TestCase):
         common.create_empty_directories(self.src_dirpath, self.dest_dirpath)
 
         # Skip test on Lustre filesystem
-        if any(is_in_lustre(path) for path in (self.src_dirpath, self.dest_dirpath)):
+        if any(common.filesystem_type(path) == "lustre" for path in (self.src_dirpath, self.dest_dirpath)):
             self.skipTest("Source or destination is on Lustre.")
 
         # create file with a middle 1G hole
@@ -84,7 +84,7 @@ class CommonTests(common.TestCase):
         common.create_empty_directories(self.src_dirpath, self.dest_dirpath)
 
         # Skip test on Lustre filesystem
-        if any(is_in_lustre(path) for path in (self.src_dirpath, self.dest_dirpath)):
+        if any(common.filesystem_type(path) == "lustre" for path in (self.src_dirpath, self.dest_dirpath)):
             self.skipTest("Source or destination is on Lustre.")
         
         # create file with an end 1G hole
@@ -104,7 +104,7 @@ class CommonTests(common.TestCase):
         common.create_empty_directories(self.src_dirpath, self.dest_dirpath)
 
         # Skip test on Lustre filesystem
-        if any(is_in_lustre(path) for path in (self.src_dirpath, self.dest_dirpath)):
+        if any(common.filesystem_type(path) == "lustre" for path in (self.src_dirpath, self.dest_dirpath)):
             self.skipTest("Source or destination is on Lustre.")
         
         # create file with a front 4M, middle 1G, end 1G hole
@@ -211,11 +211,6 @@ class CommonTests(common.TestCase):
 
         # CHECK: user xattr is not copied in dest
         self.assertNotIn("user.test", os.listxattr(self.dest_tempfilepath), msg="User xattr preserved in copied file.")
-
-def is_in_lustre(path):
-    if common.run_local("lfs", "df", path).returncode == 0:
-        return True
-    return False
 
 def user_xattrs_allowed(path): 
     if "nouser_xattr" not in common.run_local("grep", common.mount_basename(path), "/proc/mounts").stdout:
