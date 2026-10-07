@@ -93,3 +93,12 @@ def get_tree_entries(root):
         for name in dirnames + filenames:
             entries.add(os.path.relpath(os.path.join(dirpath, name), root))
     return entries
+
+def filesystem_type(path):
+    result = run_local("df", "-T", path)
+    lines = result.stdout.strip().splitlines()
+
+    if len(lines) < 2:
+        raise RuntimeError(f"Unexpected df output: {result.stdout!r}")
+
+    return lines[1].split()[1]
