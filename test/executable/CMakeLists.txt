@@ -46,7 +46,7 @@ SET(MFU_EXECUTABLE_TEST_ENVIRONMENT
 FUNCTION(MFU_ADD_EXECUTABLE_TEST module)
   ADD_TEST(
     NAME "executable.${module}"
-    COMMAND "${Python3_EXECUTABLE}" -m unittest "tests/test_${module}.py"
+    COMMAND "${Python3_EXECUTABLE}" -m unittest "tests/test_${module}.py" -v
   )
   SET_TESTS_PROPERTIES("executable.${module}" PROPERTIES
     ENVIRONMENT "${MFU_EXECUTABLE_TEST_ENVIRONMENT}"
@@ -61,3 +61,4 @@ MFU_ADD_EXECUTABLE_TEST(dcp)
 MFU_ADD_EXECUTABLE_TEST(dsync)
 MFU_ADD_EXECUTABLE_TEST(dtar)
 MFU_ADD_EXECUTABLE_TEST(dwalk)
+MFU_ADD_EXECUTABLE_TEST(drm)
