@@ -3,8 +3,21 @@
 # libmfu link required).  src/common is already on the include path (added
 # with INCLUDE_DIRECTORIES(BEFORE ...) in the top-level CMakeLists).
 ADD_EXECUTABLE(test_sha256
-  test_sha256/test_sha256.c
+  test_sha256.c
   ${CMAKE_SOURCE_DIR}/src/common/mfu_sha256.c
 )
 SET_TARGET_PROPERTIES(test_sha256 PROPERTIES C_STANDARD 99)
 ADD_TEST(NAME unit.sha256_kat COMMAND test_sha256)
+SET_TESTS_PROPERTIES("unit.sha256_kat" PROPERTIES LABELS unit)
+
+
+SET(MFU_UNIT_TEST_NAMES
+  test_mfu_flist_chmod
+)
+
+FOREACH(name ${MFU_UNIT_TEST_NAMES})
+  ADD_EXECUTABLE(${name} ${name}.c common.c)
+  TARGET_LINK_LIBRARIES(${name} PRIVATE mfu)
+  ADD_TEST(NAME unit.${name} COMMAND ${name})
+  SET_TESTS_PROPERTIES("unit.${name}" PROPERTIES LABELS unit)
+ENDFOREACH()
