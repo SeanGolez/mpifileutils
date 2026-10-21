@@ -10,14 +10,25 @@ SET_TARGET_PROPERTIES(test_sha256 PROPERTIES C_STANDARD 99)
 ADD_TEST(NAME unit.sha256_kat COMMAND test_sha256)
 SET_TESTS_PROPERTIES("unit.sha256_kat" PROPERTIES LABELS unit)
 
+SET(TEST_TMPDIR "${CMAKE_CURRENT_SOURCE_DIR}/test_tempdir" CACHE PATH
+  "Directory used for running unit tests"
+)
+
+SET(MFU_UNIT_TEST_ENVIRONMENT
+  "TEST_TMPDIR=${TEST_TMPDIR}"
+)
 
 SET(MFU_UNIT_TEST_NAMES
   test_mfu_flist_chmod
+  test_mfu_flist_walk
 )
 
 FOREACH(name ${MFU_UNIT_TEST_NAMES})
-  ADD_EXECUTABLE(${name} ${name}.c common.c)
+  ADD_EXECUTABLE(${name} ${name}.c common.c scenarios.c)
   TARGET_LINK_LIBRARIES(${name} PRIVATE mfu)
   ADD_TEST(NAME unit.${name} COMMAND ${name})
-  SET_TESTS_PROPERTIES("unit.${name}" PROPERTIES LABELS unit)
+  SET_TESTS_PROPERTIES("unit.${name}" PROPERTIES
+    ENVIRONMENT "${MFU_UNIT_TEST_ENVIRONMENT}"
+    LABELS unit
+  )
 ENDFOREACH()
